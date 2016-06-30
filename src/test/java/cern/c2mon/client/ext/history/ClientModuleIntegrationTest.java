@@ -30,8 +30,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {
-    "classpath:cern/c2mon/client/ext/history/c2mon-historymanager-test.xml",
-    "classpath:spring-history.xml"
+    "classpath:test-config/c2mon-historymanager-test.xml",
+    "classpath:config/c2mon-client-ext-history.xml"
 })
 @TestPropertySource("classpath:history.properties")
 public class ClientModuleIntegrationTest {
