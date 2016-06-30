@@ -21,6 +21,17 @@ import org.springframework.context.ApplicationContext;
 
 import cern.c2mon.client.core.C2monServiceGateway;
 
+/**
+ * Gateway for acquiring references to the various services available in the
+ * history extension.
+ *
+ * This gateway is designed to be used from a non Spring environment. If your
+ * application already starts a Spring context, you should not use this, but
+ * directly {@link org.springframework.beans.factory.annotation.Autowire}
+ * the services that you need.
+ *
+ * @author Justin Lewis Salmon
+ */
 public class C2monHistoryGateway {
 
   private static C2monHistoryManager historyManager = null;
