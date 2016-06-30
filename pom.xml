@@ -1,24 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <parent>
-    <groupId>cern.c2mon.c2mon-client</groupId>
-    <artifactId>c2mon-client-pom</artifactId>
-    <version>1.6.0</version>
+    <groupId>cern.c2mon.client</groupId>
+    <artifactId>c2mon-client</artifactId>
+    <version>1.8.0-SNAPSHOT</version>
   </parent>
 
-  <groupId>cern.c2mon.c2mon-client</groupId>
   <artifactId>c2mon-client-ext-history</artifactId>
-  <version>1.7.7-SNAPSHOT</version>
-
   <packaging>jar</packaging>
 
-  <dependencies>
+  <scm>
+    <url>https://gitlab.cern.ch/c2mon/c2mon-client-ext-history</url>
+    <connection>scm:git:git://gitlab.cern.ch/c2mon/c2mon-client-ext-history.git</connection>
+    <developerConnection>scm:git:git@gitlab.cern.ch:7999/c2mon/c2mon-client-ext-history.git</developerConnection>
+  </scm>
 
+  <dependencies>
     <!-- C2MON dependencies -->
     <dependency>
-      <groupId>cern.c2mon.c2mon-client</groupId>
-      <artifactId>c2mon-client-all</artifactId>
+      <groupId>cern.c2mon.client</groupId>
+      <artifactId>c2mon-client-core</artifactId>
     </dependency>
 
     <!-- 3rd party dependencies -->
@@ -59,19 +62,16 @@
       <artifactId>commons-dbcp</artifactId>
       <version>1.4</version>
     </dependency>
-
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis-spring</artifactId>
       <version>1.2.5</version>
     </dependency>
-
     <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
       <version>3.3.1</version>
     </dependency>
-
     <dependency>
       <groupId>org.springframework.data</groupId>
       <artifactId>spring-data-jpa</artifactId>
@@ -113,7 +113,7 @@
       <version>1.4.01</version>
     </dependency>
 
-    <!-- test dependencies -->
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
@@ -122,41 +122,11 @@
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
     </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
-  <developers />
+
 
   <build>
-    <resources>
-      <resource>
-        <directory>src/resources</directory>
-      </resource>
-    </resources>
-
     <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-surefire-plugin</artifactId>
-        <version>2.8</version>
-        <configuration>
-          <argLine>
-            <!-- for the tests -->
-            <!-- -Dc2mon.client.conf.url=http://timweb/conf/c2mon-client.properties-->
-
-            <!--&lt;!&ndash; added during the migration to Spring &ndash;&gt;-->
-            <!-- -Ddatasource.persistence.connections.initial=2-->
-            <!-- -Ddatasource.persistence.connections.max=2-->
-            <!-- added during the migration to Spring -->
-
-            <!-- for the tests -->
-          </argLine>
-        </configuration>
-      </plugin>
-
       <plugin>
         <groupId>com.mysema.maven</groupId>
         <artifactId>apt-maven-plugin</artifactId>
@@ -167,7 +137,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>src/generated</outputDirectory>
+              <outputDirectory>src/generated/java</outputDirectory>
               <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>
@@ -175,9 +145,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <developerConnection>scm:svn:svn+ssh://svn/reps/tim2/trunk/c2mon/c2mon-client/c2mon-client-ext-history</developerConnection>
-  </scm>
 
 </project>
