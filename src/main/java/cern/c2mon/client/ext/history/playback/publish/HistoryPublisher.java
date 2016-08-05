@@ -30,7 +30,7 @@ import cern.c2mon.client.ext.history.common.id.TagValueUpdateId;
 import cern.c2mon.client.ext.history.playback.HistoryPlayerImpl;
 import cern.c2mon.client.ext.history.updates.HistorySupervisionEventImpl;
 import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
-import cern.c2mon.client.jms.SupervisionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.shared.client.tag.TagMode;
 import cern.c2mon.shared.client.tag.TagValueUpdate;

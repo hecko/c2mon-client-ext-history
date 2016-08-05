@@ -52,8 +52,8 @@ import cern.c2mon.client.ext.history.data.HistoryLoadingManagerImpl;
 import cern.c2mon.client.ext.history.playback.HistoryPlayerCoreAccess;
 import cern.c2mon.client.ext.history.playback.HistoryPlayerImpl;
 import cern.c2mon.client.ext.history.util.KeyForValuesMap;
-import cern.c2mon.client.jms.ConnectionListener;
-import cern.c2mon.client.jms.SupervisionListener;
+import cern.c2mon.client.core.jms.ConnectionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionEntity;
 
 @Service

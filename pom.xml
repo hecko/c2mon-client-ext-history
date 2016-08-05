@@ -128,7 +128,6 @@
     <dependency>
       <groupId>xml-apis</groupId>
       <artifactId>xml-apis</artifactId>
-      <version>1.4.01</version>
     </dependency>
 
     <!-- Test dependencies -->
@@ -155,7 +154,7 @@
               <goal>process</goal>
             </goals>
             <configuration>
-              <outputDirectory>src/generated/java</outputDirectory>
+              <outputDirectory>target/generated-sources/java</outputDirectory>
               <processor>com.mysema.query.apt.jpa.JPAAnnotationProcessor</processor>
             </configuration>
           </execution>

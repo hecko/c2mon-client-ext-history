@@ -17,7 +17,7 @@
 package cern.c2mon.client.ext.history.playback.publish;
 
 import cern.c2mon.client.ext.history.util.KeyForValuesMap;
-import cern.c2mon.client.jms.SupervisionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 
 /**
  * This class keeps lists of which listeners is listening on which

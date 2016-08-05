@@ -52,7 +52,7 @@ import cern.c2mon.client.ext.history.playback.publish.SupervisionListenersManage
 import cern.c2mon.client.ext.history.playback.schedule.ClockSynchronizer;
 import cern.c2mon.client.ext.history.playback.schedule.HistoryScheduler;
 import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
-import cern.c2mon.client.jms.SupervisionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.client.alarm.AlarmValue;
 import cern.c2mon.shared.client.tag.TagValueUpdate;
 import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionEntity;

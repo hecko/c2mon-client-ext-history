@@ -24,7 +24,7 @@ import cern.c2mon.client.ext.history.common.HistoryPlayer;
 import cern.c2mon.client.ext.history.common.HistoryPlayerEvents;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
 import cern.c2mon.client.ext.history.common.Timespan;
-import cern.c2mon.client.jms.SupervisionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.client.tag.TagValueUpdate;
 import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionEntity;
 
