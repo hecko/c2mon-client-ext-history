@@ -1,16 +1,16 @@
 /******************************************************************************
  * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
- * 
+ *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation, either version 3 of the license.
- * 
+ *
  * C2MON is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
  * more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
@@ -27,28 +27,28 @@ import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionStat
 /**
  * This class implement the {@link SupervisionEvent} and is used when the event
  * is retrieved from the history
- * 
+ *
  * @author vdeila
- * 
+ *
  */
 public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
 
   /** The id of the supervision event */
   private final SupervisionEventId id;
-  
+
   /** one state from the <code>SupervisionStatus</code> enumeration */
   private final SupervisionStatus status;
   /** time of the event */
   private final Timestamp eventTime;
   /** Free text for describing this event */
   private final String message;
-  
+
   /** <code>true</code> if the value is an initial value */
   private boolean initialValue = false;
-  
+
   /**
    * Constructor.
-   * 
+   *
    * @param entity
    *          The entity for which this supervision event is created
    * @param entityId
@@ -64,10 +64,10 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
       final String message) {
     this(new SupervisionEventId(entity, entityId), status, eventTime, message);
   }
-  
+
   /**
    * Constructor.
-   * 
+   *
    * @param identity
    *          The identify of the supervision event
    * @param status
@@ -88,6 +88,7 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   /**
    * @return the entity
    */
+  @Override
   public SupervisionEntity getEntity() {
     return this.id.getEntity();
   }
@@ -95,6 +96,7 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   /**
    * @return the entityId
    */
+  @Override
   public Long getEntityId() {
     return this.id.getEntityId();
   }
@@ -102,6 +104,7 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   /**
    * @return the status
    */
+  @Override
   public SupervisionStatus getStatus() {
     return status;
   }
@@ -109,6 +112,7 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   /**
    * @return the eventTime
    */
+  @Override
   public Timestamp getEventTime() {
     return eventTime;
   }
@@ -116,13 +120,14 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   /**
    * @return the message
    */
+  @Override
   public String getMessage() {
     return message;
   }
 
-  
+
   /**
-   * 
+   *
    * @return a clone of this
    */
   @Override
@@ -146,14 +151,14 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
   }
 
   /**
-   * 
+   *
    * @return <code>true</code> if the value is an initial value
    */
   @Override
   public boolean isInitialValue() {
     return initialValue;
   }
-  
+
   /**
    * @param initialValue <code>true</code> if the value is an initial value
    */
@@ -219,6 +224,11 @@ public class HistorySupervisionEventImpl implements HistorySupervisionEvent {
     return true;
   }
 
-  
-  
+  @Override
+  public String getName() {
+    return null;
+  }
+
+
+
 }
