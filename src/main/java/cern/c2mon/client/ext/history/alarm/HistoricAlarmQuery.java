@@ -16,11 +16,12 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.alarm;
 
-import cern.c2mon.client.ext.history.dbaccess.util.TimeZoneUtil;
+import java.sql.Timestamp;
+
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.types.Predicate;
 
-import java.sql.Timestamp;
+import cern.c2mon.client.ext.history.dbaccess.util.TimeZoneUtil;
 
 /**
  * This class is a simple builder for creating queries on historical alarms.
