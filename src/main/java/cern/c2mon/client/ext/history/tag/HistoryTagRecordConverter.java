@@ -130,7 +130,7 @@ final class HistoryTagRecordConverter {
     }
 
     // Converts the data to be of the correct array type
-    result = TypeConverter.cast(result, resultType.getResultClass().toString());
+    result = TypeConverter.cast(result, resultType.getResultClass().getName());
 
     return result;
   }
