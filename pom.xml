@@ -43,8 +43,8 @@
 
   <scm>
     <url>https://gitlab.cern.ch/c2mon/c2mon-client-ext-history</url>
-    <connection>scm:git:git://gitlab.cern.ch/c2mon/c2mon-client-ext-history.git</connection>
-    <developerConnection>scm:git:git@gitlab.cern.ch:7999/c2mon/c2mon-client-ext-history.git</developerConnection>
+    <connection>scm:git:ssh://git@gitlab.cern.ch/c2mon/c2mon-client-ext-history.git</connection>
+    <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-client-ext-history.git</developerConnection>
   </scm>
 
   <dependencies>
