@@ -120,7 +120,7 @@ class HistoryTagExpressionInterpreter {
     }
     
     try {
-      configuration.setValue(parameter, TypeConverter.cast(valueToCast, parameter.getType().getName()));
+      configuration.setValue(parameter, TypeConverter.castToType(valueToCast, parameter.getType()));
     }
     catch (Exception e) {
       throw new HistoryTagExpressionException(String.format(

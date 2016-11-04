@@ -16,22 +16,15 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.tag;
 
-import java.lang.reflect.Array;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Stack;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cern.c2mon.client.ext.history.common.tag.HistoryTag;
-import cern.c2mon.client.ext.history.common.tag.HistoryTagConfiguration;
-import cern.c2mon.client.ext.history.common.tag.HistoryTagParameter;
-import cern.c2mon.client.ext.history.common.tag.HistoryTagRecord;
-import cern.c2mon.client.ext.history.common.tag.HistoryTagResultType;
+import cern.c2mon.client.ext.history.common.tag.*;
 import cern.c2mon.shared.common.datatag.DataTagQuality;
 import cern.c2mon.shared.common.type.TypeConverter;
 
@@ -130,7 +123,7 @@ final class HistoryTagRecordConverter {
     }
 
     // Converts the data to be of the correct array type
-    result = TypeConverter.cast(result, resultType.getResultClass().getName());
+    result = TypeConverter.castToType(result, resultType.getResultClass());
 
     return result;
   }
@@ -335,7 +328,7 @@ final class HistoryTagRecordConverter {
    *         {@link HistoryTagRecord#getTimestamp()}s.
    */
   private Collection<Timestamp> getXValues(final Collection<HistoryTagRecord> records, final boolean allowNullValues) {
-    final List<Timestamp> result = new ArrayList<Timestamp>();
+    final List<Timestamp> result = new ArrayList<>();
     if (records != null) {
       for (final HistoryTagRecord record : records) {
         if (!allowNullValues && record.getValue() == null)
@@ -354,7 +347,7 @@ final class HistoryTagRecordConverter {
    *         {@link HistoryTagRecord#getValue()}s.
    */
   private Collection<Object> getYValues(final Collection<HistoryTagRecord> records, final boolean allowNullValues) {
-    final List<Object> result = new ArrayList<Object>();
+    final List<Object> result = new ArrayList<>();
     if (records != null) {
       for (final HistoryTagRecord record : records) {
         if (!allowNullValues && record.getValue() == null)
