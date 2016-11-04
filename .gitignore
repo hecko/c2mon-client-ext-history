@@ -2,6 +2,7 @@
 *.class
 build/
 target/
+temp.json
 
 # IDE files
 *.iml
@@ -17,5 +18,8 @@ target/
 
 # Virtual machine crash logs
 hs_err_pid*
+
+# MacOSX files
+.DS_Store
 
 activemq-data/
