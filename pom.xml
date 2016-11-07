@@ -12,19 +12,6 @@
   <artifactId>c2mon-client-ext-history</artifactId>
   <packaging>jar</packaging>
 
-  <distributionManagement>
-    <repository>
-      <id>artifactory</id>
-      <name>cs-ccr-ap1.cern.ch-releases</name>
-      <url>http://artifactory/beco-release-local</url>
-    </repository>
-    <snapshotRepository>
-      <id>artifactory</id>
-      <name>cs-ccr-ap1.cern.ch-snapshots</name>
-      <url>http://artifactory/beco-development-local</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <scm>
     <url>https://gitlab.cern.ch/c2mon/c2mon-client-ext-history</url>
     <connection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-client-ext-history.git</connection>
