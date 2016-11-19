@@ -25,7 +25,7 @@ Be sure that your `JAVA_HOME` environment variable points to the `jdk1.8.0` fold
 extracted from the JDK download.
 
 ### Check out sources
-`git clone git@github.com:c2mon/c2mon.git`
+`git clone git@github.com:c2mon/c2mon-client-ext-history.git`
 
 ### Compile and test; build all jars, distribution zips, and docs
 `./mvnw build`
