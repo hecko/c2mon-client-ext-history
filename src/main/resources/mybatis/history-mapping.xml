@@ -23,28 +23,28 @@
     <result property="tagName" column="TAGNAME" jdbcType="VARCHAR"/>
     <result property="tagValue" column="TAGVALUE" jdbcType="VARCHAR"/>
     <result property="tagValueDesc" column="TAGVALUEDESC" jdbcType="VARCHAR"/>
-    
+
     <result property="tagDataType" column="TAGDATATYPE" jdbcType="VARCHAR"/>
-    
+
     <result property="tagTime" column="TAGTIME" jdbcType="TIMESTAMP"/>
     <result property="daqTime" column="TAGDAQTIME" jdbcType="TIMESTAMP"/>
     <result property="serverTime" column="TAGSERVERTIME" jdbcType="TIMESTAMP"/>
-    
-    <result property="dataTagQuality" column="TAGSTATUSDESC" jdbcType="VARCHAR" javaType="DataTagQuality"/>
+
+    <result property="dataTagQuality" column="TAGSTATUSDESC" jdbcType="VARCHAR" javaType="cern.c2mon.shared.common.datatag.DataTagQuality"/>
     <result property="tagMode" column="TAGMODE"/>
     <result property="fromInitialSnapshot" column="FROMSNAPSHOT"/>
   </resultMap>
-  
+
   <resultMap id="SupervisionRecordResultMap" type="SupervisionRecordBean">
     <constructor>
       <idArg column="SUL_ENTITY" javaType="SupervisionEntity" />
       <idArg column="SUL_ID" javaType="Long" />
     </constructor>
-    
+
     <result property="date" column="SUL_DATE" jdbcType="TIMESTAMP" />
     <result property="status" column="SUL_STATUS" jdbcType="VARCHAR" javaType="SupervisionStatus" />
     <result property="message" column="SUL_MESSAGE" jdbcType="VARCHAR" />
-    
+
   </resultMap>
 
   <!--
@@ -54,17 +54,17 @@
             databaseId="oracle"
             parameterType="ShortTermLogHistoryRequestBean"
             resultMap="historyRecordResultMap">
-            
+
     <if test="maxRecords != null">
       SELECT * FROM (
     </if>
-    
-    SELECT 
-        LOGDATE, TAGID, TAGNAME, TAGVALUE,  TAGVALUEDESC, TAGDATATYPE, 
+
+    SELECT
+        LOGDATE, TAGID, TAGNAME, TAGVALUE,  TAGVALUEDESC, TAGDATATYPE,
         TAGTIME, TAGDAQTIME, TAGSERVERTIME, TAGSTATUSDESC, TAGMODE
     FROM SHORTTERMLOG
     WHERE
-      (TAGID IN 
+      (TAGID IN
         <foreach item="tag" index="index" collection="tagIds"
           open="(" separator="," close=")">
           #{tag}
@@ -180,7 +180,7 @@
       ) AS SHORTTERMLOG
     LIMIT <![CDATA[ 1 ]]>
   </select>
-  
+
   <!--
     Requests all daily snapshot data for the given set of tags, and the given time span.
     The data is requeted from the daily snapshot table.
@@ -192,7 +192,7 @@
     SELECT LOGDATE+1 as LOGDATE, TAGID, TAGNAME, TAGVALUE, TAGVALUEDESC, TAGDATATYPE, TAGTIME, TAGDAQTIME, TAGSERVERTIME, TAGSTATUSDESC, TAGMODE, 1 AS FROMSNAPSHOT
     FROM STL_DAY_SNAPSHOT
     WHERE
-        (TAGID in 
+        (TAGID in
           <foreach item="tag" index="index" collection="tagIds"
             open="(" separator="," close=")">
             #{tag}
@@ -218,7 +218,7 @@
     AND LOGDATE <![CDATA[ >= ]]> DATE(#{fromTime})
     AND LOGDATE <![CDATA[ <= ]]> DATE(#{toTime})
   </select>
-  
+
   <!--
     Requests supervision events matching the request parameter
    -->
@@ -255,7 +255,7 @@
     </if>
     ORDER BY SUL_DATE ASC
   </select>
-  
+
   <!--
     Requests the initial supervision event matching the request parameter
    -->
@@ -290,6 +290,6 @@
     ) AS SHORTTERMLOG
     LIMIT <![CDATA[ 1 ]]>
   </select>
-  
+
 </mapper>
 
