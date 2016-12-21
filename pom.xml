@@ -8,7 +8,6 @@
     <version>1.8.6</version>
   </parent>
 
-  <version>1.8.4-SNAPSHOT</version>
   <artifactId>c2mon-client-ext-history</artifactId>
   <version>1.8.4-SNAPSHOT</version>
   <packaging>jar</packaging>
