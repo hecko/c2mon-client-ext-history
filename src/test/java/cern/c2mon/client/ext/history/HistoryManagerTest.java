@@ -49,7 +49,7 @@ import cern.c2mon.client.core.cache.BasicCacheHandler;
 import cern.c2mon.client.core.manager.CoreSupervisionManager;
 import cern.c2mon.client.core.service.AdvancedTagService;
 import cern.c2mon.client.core.service.TagServiceImpl;
-import cern.c2mon.client.core.tag.ClientDataTagImpl;
+import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryPlayer;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
@@ -204,7 +204,7 @@ public class HistoryManagerTest {
 
     // Generating data for the HistoryProvider
     for (int i = 0; i < NUMBER_OF_INITIAL_TAGS + NUMBER_OF_ADDED_TAGS; i++) {
-      final ClientDataTagImpl cdt = new ClientDataTagImpl(100000L + i);
+      final TagController tagController = new TagController(100000L + i);
 
       final Timestamp sourceTimestamp;
       final Timestamp daqTimestamp;
@@ -227,7 +227,7 @@ public class HistoryManagerTest {
       // Creating "current real time" values
       final TransferTagValueImpl value =
         new TransferTagValueImpl(
-            cdt.getId(),
+            tagController.getTagImpl().getId(),
             Integer.valueOf(i),
             "Test tag value description",
             new DataTagQualityImpl(),
@@ -237,31 +237,31 @@ public class HistoryManagerTest {
             serverTimestamp,
             "Test tag");
       value.getDataTagQuality().validate();
-      cdt.update(value);
+      tagController.update(value);
 
       if (!isAddedLater) {
         // Adds it to the subscribed tags
-        subscribedTags.add(cdt);
+        subscribedTags.add(tagController.getTagImpl());
       }
       else {
         // Adds it to the list of tags which will be subscribed to later
-        subscribedTagsAddedLater.put(cdt.getId(), cdt);
+        subscribedTagsAddedLater.put(tagController.getTagImpl().getId(), tagController.getTagImpl());
       }
 
       if (!willBeFiltered) {
         if (!isAddedLater) {
           // Adds the id to the initialization tag list
-          firstInitialTagIds.add(cdt.getId());
+          firstInitialTagIds.add(tagController.getTagImpl().getId());
         }
         else {
-          secondInitialTagIds.add(cdt.getId());
+          secondInitialTagIds.add(tagController.getTagImpl().getId());
         }
       }
 
       // Creates a TagValueUpdate record
       final HistoryTagValueUpdateImpl initialHistoryRecord =
           new HistoryTagValueUpdateImpl(
-              cdt.getId(),
+              tagController.getTagImpl().getId(),
               new DataTagQualityImpl(),
               Integer.valueOf(i+40000),
               new Timestamp(timespan.getStart().getTime() - 1 * 60 * 60 * 1000),
@@ -289,7 +289,7 @@ public class HistoryManagerTest {
         // Creates a TagValueUpdate record
         final HistoryTagValueUpdateImpl historyRecord =
             new HistoryTagValueUpdateImpl(
-                cdt.getId(),
+                tagController.getTagImpl().getId(),
                 new DataTagQualityImpl(),
                 Integer.valueOf((int)(currentTime % 100000)),
                 new Timestamp(currentTime - 2 * 60 * 60 * 1000),

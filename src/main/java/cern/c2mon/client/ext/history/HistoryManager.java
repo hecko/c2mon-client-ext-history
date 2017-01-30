@@ -38,7 +38,7 @@ import cern.c2mon.client.core.cache.BasicCacheHandler;
 import cern.c2mon.client.core.listener.TagSubscriptionListener;
 import cern.c2mon.client.core.manager.CoreSupervisionManager;
 import cern.c2mon.client.core.service.AdvancedTagService;
-import cern.c2mon.client.core.tag.ClientDataTagImpl;
+import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
 import cern.c2mon.client.ext.history.common.HistoryPlayer;
 import cern.c2mon.client.ext.history.common.HistoryPlayerEvents;
@@ -216,7 +216,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
       for (final Tag cdt : clientDataTags) {
         
         Tag realtimeValue;
-        realtimeValue = ((ClientDataTagImpl) cdt).clone();
+        realtimeValue = ((TagController) cdt).getTagImpl().clone();
         
         if (realtimeValue != null) {
           if (realtimeValue.getServerTimestamp().getTime() == 0) {
@@ -224,7 +224,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
           }
         }
         
-        ((ClientDataTagImpl) cdt).clean();
+        ((TagController) cdt).clean();
         
         // Registers to tag updates
         this.historyPlayer.registerTagUpdateListener(

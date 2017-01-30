@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import cern.c2mon.client.common.tag.Tag;
-import cern.c2mon.client.core.tag.ClientDataTagImpl;
+import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryLoadingConfiguration;
 import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
 import cern.c2mon.client.ext.history.common.HistorySupervisionEvent;
@@ -215,7 +215,7 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
       }
     }
 
-    ((ClientDataTagImpl) clientTag).clean();
+    ((TagController) clientTag).clean();
 
     final boolean removeRedundantData = configuration.isRemoveRedundantData();
 
@@ -228,7 +228,7 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
       if (historyUpdate instanceof HistoryTagValueUpdate) {
 
         final HistoryTagValueUpdate historyTagValueUpdate = (HistoryTagValueUpdate) historyUpdate;
-        final boolean wasUpdatedSuccesfully = ((ClientDataTagImpl) clientTag).onUpdate(historyTagValueUpdate);
+        final boolean wasUpdatedSuccesfully = ((TagController) clientTag).onUpdate(historyTagValueUpdate);
 
         if (!wasUpdatedSuccesfully) // only Valid updates should be added in the history
           continue; // => the rest are ignored
