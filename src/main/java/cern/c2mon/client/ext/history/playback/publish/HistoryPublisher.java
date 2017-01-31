@@ -22,7 +22,7 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryUpdate;
 import cern.c2mon.client.ext.history.common.id.SupervisionEventId;

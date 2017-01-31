@@ -17,25 +17,17 @@
 package cern.c2mon.client.ext.history.playback;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import junit.framework.Assert;
-
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
 import cern.c2mon.client.ext.history.common.HistorySupervisionEvent;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;

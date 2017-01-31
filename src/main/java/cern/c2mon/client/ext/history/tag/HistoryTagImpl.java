@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 import cern.c2mon.client.common.listener.BaseTagListener;
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.common.tag.TypeNumeric;
-import cern.c2mon.client.core.TagService;
+import cern.c2mon.client.core.service.TagService;
 import cern.c2mon.client.ext.history.common.tag.HistoryTag;
 import cern.c2mon.client.ext.history.common.tag.HistoryTagConfiguration;
 import cern.c2mon.client.ext.history.common.tag.HistoryTagExpressionException;

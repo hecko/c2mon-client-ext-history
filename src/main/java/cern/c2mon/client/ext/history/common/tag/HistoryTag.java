@@ -20,14 +20,14 @@ import java.util.Collection;
 
 import cern.c2mon.client.common.listener.BaseTagListener;
 import cern.c2mon.client.common.tag.Tag;
-import cern.c2mon.client.core.TagService;
+import cern.c2mon.client.core.service.TagService;
 import cern.c2mon.shared.common.datatag.TagQualityStatus;
 
 /**
  * This interface describes the methods for a history tag. A history tag should
  * take an expression, and get history data based on it.
  * 
- * @see HistoryTagManager#subscribe(HistoryTag)
+ * @see TagService#subscribe(HistoryTag)
  * @see TagService#subscribe(java.util.Set, BaseTagListener)
  * 
  * @author vdeila

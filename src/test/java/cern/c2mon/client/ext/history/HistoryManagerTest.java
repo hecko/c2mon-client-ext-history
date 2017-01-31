@@ -46,9 +46,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.cache.BasicCacheHandler;
-import cern.c2mon.client.core.manager.CoreSupervisionManager;
+import cern.c2mon.client.core.service.CoreSupervisionService;
 import cern.c2mon.client.core.service.AdvancedTagService;
-import cern.c2mon.client.core.service.TagServiceImpl;
+import cern.c2mon.client.core.service.impl.TagServiceImpl;
 import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryPlayer;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
@@ -101,7 +101,7 @@ public class HistoryManagerTest {
   private AdvancedTagService tagServiceMock;
 
   @Autowired
-  private CoreSupervisionManager supervisionManagerMock;
+  private CoreSupervisionService coreSupervisionService;
 
   /*
    * Test variables
@@ -384,7 +384,7 @@ public class HistoryManagerTest {
     // Sets stub methods
     //
 
-    EasyMock.expect(supervisionManagerMock.isServerConnectionWorking()).andStubReturn(Boolean.TRUE);
+    EasyMock.expect(coreSupervisionService.isServerConnectionWorking()).andStubReturn(Boolean.TRUE);
 
     EasyMock.expect(cacheMock.get(EasyMock.capture(cacheGetParameter))).andReturn(subscribedTagsAddedLater).atLeastOnce();
     EasyMock.expect(cacheMock.getAllSubscribedDataTags()).andReturn(subscribedTags).atLeastOnce();
@@ -427,7 +427,7 @@ public class HistoryManagerTest {
     final AtomicBoolean finishedLoading = new AtomicBoolean(false);
     final CountDownLatch initializingCountDownLatch = new CountDownLatch(1);
 
-    EasyMock.replay(cacheMock, historyProviderMock, historyPlayerListenerMock, tagServiceMock, supervisionManagerMock);
+    EasyMock.replay(cacheMock, historyProviderMock, historyPlayerListenerMock, tagServiceMock, coreSupervisionService);
     historyManager.getHistoryPlayerEvents().addHistoryPlayerListener(historyPlayerListenerMock);
 
     // Event to know when the history is finish loading

@@ -25,14 +25,14 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import junit.framework.Assert;
-
 import org.easymock.EasyMock;
 import org.easymock.IMocksControl;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
 import cern.c2mon.client.ext.history.common.HistorySupervisionEvent;
 import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
@@ -42,7 +42,6 @@ import cern.c2mon.client.ext.history.dbaccess.HistoryProviderSimpleImpl;
 import cern.c2mon.client.ext.history.testUtil.UncaughtExceptionSetup;
 import cern.c2mon.client.ext.history.updates.HistorySupervisionEventImpl;
 import cern.c2mon.client.ext.history.updates.HistoryTagValueUpdateImpl;
-import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.client.supervision.SupervisionEvent;
 import cern.c2mon.shared.client.tag.TagMode;
 import cern.c2mon.shared.client.tag.TagValueUpdate;

@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.ext.history.common.HistoryPlayer;
 import cern.c2mon.client.ext.history.common.HistoryPlayerEvents;

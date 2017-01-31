@@ -24,7 +24,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import cern.c2mon.client.core.TagService;
+import cern.c2mon.client.core.service.TagService;
 import cern.c2mon.client.ext.history.dbaccess.HistorySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,11 +32,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.cache.BasicCacheHandler;
 import cern.c2mon.client.core.listener.TagSubscriptionListener;
-import cern.c2mon.client.core.manager.CoreSupervisionManager;
+import cern.c2mon.client.core.service.CoreSupervisionService;
 import cern.c2mon.client.core.service.AdvancedTagService;
 import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
@@ -69,7 +69,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
   private final BasicCacheHandler cache;
   
   /** Reference to the <code>C2monSupervisionManager</code> */
-  private final CoreSupervisionManager supervisionManager;
+  private final CoreSupervisionService coreSupervisionService;
   
   /** Reference to the {@link HistoryTagManager} */
   private final HistoryTagManager historyTagManager;
@@ -91,12 +91,12 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
  
   @Autowired
   protected HistoryManager(final TagService tagService, final BasicCacheHandler pCache,
-      final CoreSupervisionManager pSupervisionManager, final HistoryTagManager historyTagManager,
+      final CoreSupervisionService supervisionService, final HistoryTagManager historyTagManager,
                            @Qualifier("historyFactory") HistorySessionFactory historySessionFactory) {
     
     this.tagService = tagService;
     this.cache = pCache;
-    this.supervisionManager = pSupervisionManager;
+    this.coreSupervisionService = supervisionService;
     this.historyTagManager = historyTagManager;
     this.historySessionFactory = historySessionFactory;
   }
@@ -112,7 +112,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
 
   @Override
   public void startHistoryPlayerMode(final HistoryProvider provider, final Timespan timespan) {
-    if (!supervisionManager.isServerConnectionWorking()) {
+    if (!coreSupervisionService.isServerConnectionWorking()) {
       throw new RuntimeException("Cannot go into history mode," +
       		" because the connection to the server is down.");
     }
@@ -123,7 +123,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
       if (cache.isHistoryModeEnabled()) {
         if (jmsConnectionListener == null) {
           jmsConnectionListener = new ConnectionEvents();
-          supervisionManager.addConnectionListener(jmsConnectionListener);
+          coreSupervisionService.addConnectionListener(jmsConnectionListener);
         }
         
         if (historyPlayer == null) {

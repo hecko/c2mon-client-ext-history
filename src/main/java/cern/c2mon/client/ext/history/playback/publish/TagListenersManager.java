@@ -18,7 +18,7 @@ package cern.c2mon.client.ext.history.playback.publish;
 
 import java.util.Collection;
 
-import cern.c2mon.client.common.listener.TagUpdateListener;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.ext.history.util.KeyForValuesMap;
 
 /**
