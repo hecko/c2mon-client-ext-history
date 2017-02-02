@@ -18,16 +18,7 @@ package cern.c2mon.client.ext.history;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -46,8 +37,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.cache.BasicCacheHandler;
-import cern.c2mon.client.core.service.CoreSupervisionService;
 import cern.c2mon.client.core.service.AdvancedTagService;
+import cern.c2mon.client.core.service.CoreSupervisionService;
 import cern.c2mon.client.core.service.impl.TagServiceImpl;
 import cern.c2mon.client.core.tag.TagController;
 import cern.c2mon.client.ext.history.common.HistoryPlayer;
@@ -123,12 +114,6 @@ public class HistoryManagerTest {
    * started
    */
   private static final int NUMBER_OF_INITIAL_TAGS = 8;
-
-  /**
-   * The number of tags that will have real time timestamps earlier than the
-   * start date (which will then be filtered)
-   */
-  private static final int NUMBER_FILTERED_TAGS = 3;
 
   /** The number of tags which will be added later */
   private static final int NUMBER_OF_ADDED_TAGS = 8;
@@ -210,19 +195,11 @@ public class HistoryManagerTest {
       final Timestamp daqTimestamp;
       final Timestamp serverTimestamp;
 
-      final boolean willBeFiltered = i < NUMBER_FILTERED_TAGS;
       final boolean isAddedLater = i >= NUMBER_OF_INITIAL_TAGS;
 
-      if (willBeFiltered) {
-        sourceTimestamp = new Timestamp(timespan.getStart().getTime() - 3 * 60 * 60 * 1000);
-        daqTimestamp    = new Timestamp(timespan.getStart().getTime() - 3 * 60 * 60 * 1000);
-        serverTimestamp = new Timestamp(timespan.getStart().getTime() - 3 * 60 * 60 * 1000);
-      }
-      else {
-        sourceTimestamp = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
-        daqTimestamp    = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
-        serverTimestamp = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
-      }
+      sourceTimestamp = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
+      daqTimestamp = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
+      serverTimestamp = new Timestamp(timespan.getStart().getTime() + 2 * 60 * 60 * 1000);
 
       // Creating "current real time" values
       final TransferTagValueImpl value =
@@ -248,15 +225,14 @@ public class HistoryManagerTest {
         subscribedTagsAddedLater.put(tagController.getTagImpl().getId(), tagController.getTagImpl());
       }
 
-      if (!willBeFiltered) {
-        if (!isAddedLater) {
-          // Adds the id to the initialization tag list
-          firstInitialTagIds.add(tagController.getTagImpl().getId());
-        }
-        else {
-          secondInitialTagIds.add(tagController.getTagImpl().getId());
-        }
+      if (!isAddedLater) {
+        // Adds the id to the initialization tag list
+        firstInitialTagIds.add(tagController.getTagImpl().getId());
       }
+      else {
+        secondInitialTagIds.add(tagController.getTagImpl().getId());
+      }
+
 
       // Creates a TagValueUpdate record
       final HistoryTagValueUpdateImpl initialHistoryRecord =
@@ -409,9 +385,9 @@ public class HistoryManagerTest {
         @Override
         public Collection<Tag> get(final Collection<Long> tagIds) {
           final List<Tag> result = new ArrayList<Tag>();
-          for (Tag cdt : subscribedTags) {
-            if (tagIds.contains(cdt.getId())) {
-              result.add(cdt);
+          for (Tag tag : subscribedTags) {
+            if (tagIds.contains(tag.getId())) {
+              result.add(tag);
             }
           }
           return result;

@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.tag.TagController;
+import cern.c2mon.client.core.tag.TagImpl;
 import cern.c2mon.client.ext.history.common.HistoryLoadingConfiguration;
 import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
 import cern.c2mon.client.ext.history.common.HistorySupervisionEvent;
@@ -185,28 +186,28 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
     // Sorts by execution time, ascending
     Arrays.sort(historyUpdates, sortByExecutionTime);
 
-    final Tag clientTag = tagsToLoad.get(tagId);
-    if (clientTag == null) {
+    final TagController tagController = new TagController((TagImpl) tagsToLoad.get(tagId));
+    if (tagController == null) {
       // Shouldn't happen
       throw new RuntimeException("The client data tag have been removed!");
     }
 
     final SupervisionListener clientDataTagSupervision;
-    if (clientTag instanceof SupervisionListener) {
-      clientDataTagSupervision = (SupervisionListener) clientTag;
+    if (tagController instanceof SupervisionListener) {
+      clientDataTagSupervision = (SupervisionListener) tagController;
     }
     else {
       clientDataTagSupervision = null;
-      if (clientTag.getProcessIds() != null || clientTag.getProcessIds().size() != 0
-          || clientTag.getEquipmentIds() != null || clientTag.getEquipmentIds().size() != 0) {
+      if (tagController.getTagImpl().getProcessIds() != null || tagController.getTagImpl().getProcessIds().size() != 0
+          || tagController.getTagImpl().getEquipmentIds() != null || tagController.getTagImpl().getEquipmentIds().size() != 0) {
         throw new RuntimeException("The client data tag must be an instance of SupervisionListener!");
       }
     }
 
     // Setting the data type
     String dataType = "String";
-    if (clientTag != null && clientTag.getType() != null) {
-      dataType = clientTag.getType().getSimpleName();
+    if (tagController != null && tagController.getTagImpl().getType() != null) {
+      dataType = tagController.getTagImpl().getType().getSimpleName();
     }
     for (HistoryUpdate historyUpdate : historyUpdates) {
       if (historyUpdate instanceof HistoryTagValueUpdate) {
@@ -215,7 +216,7 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
       }
     }
 
-    ((TagController) clientTag).clean();
+    ((TagController) tagController).clean();
 
     final boolean removeRedundantData = configuration.isRemoveRedundantData();
 
@@ -228,23 +229,23 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
       if (historyUpdate instanceof HistoryTagValueUpdate) {
 
         final HistoryTagValueUpdate historyTagValueUpdate = (HistoryTagValueUpdate) historyUpdate;
-        final boolean wasUpdatedSuccesfully = ((TagController) clientTag).onUpdate(historyTagValueUpdate);
+        final boolean wasUpdatedSuccesfully = ((TagController) tagController).onUpdate(historyTagValueUpdate);
 
         if (!wasUpdatedSuccesfully) // only Valid updates should be added in the history
           continue; // => the rest are ignored
 
         try {
           final HistoryTagValueUpdateImpl update = new HistoryTagValueUpdateImpl(
-              clientTag.getId(),
-              clientTag.getDataTagQuality().clone(),
-              clientTag.getValue(),
+              tagController.getTagImpl().getId(),
+              tagController.getTagImpl().getDataTagQuality().clone(),
+              tagController.getTagImpl().getValue(),
               historyTagValueUpdate.getSourceTimestamp(),
               historyTagValueUpdate.getDaqTimestamp(),
-              clientTag.getServerTimestamp(),
+              tagController.getTagImpl().getServerTimestamp(),
               historyTagValueUpdate.getLogTimestamp(),
-              clientTag.getDescription(),
-              clientTag.getAlarms().toArray(new AlarmValue[0]),
-              clientTag.getMode());
+              tagController.getTagImpl().getDescription(),
+              tagController.getTagImpl().getAlarms().toArray(new AlarmValue[0]),
+              tagController.getTagImpl().getMode());
           update.setInitialValue(historyTagValueUpdate.isInitialValue());
           update.setValueClassName(dataType);
           update.setDaqTimestamp(historyTagValueUpdate.getDaqTimestamp());
@@ -260,19 +261,19 @@ abstract class HistoryLoadingManagerAbs implements HistoryLoadingManager {
         clientDataTagSupervision.onSupervisionUpdate(historyEvent);
 
         // Adds the client data tag only if it is initialized.
-        if (clientTag.getDataTagQuality().isInitialised()) {
+        if (tagController.getTagImpl().getDataTagQuality().isInitialised()) {
           try {
             final HistoryTagValueUpdateImpl update = new HistoryTagValueUpdateImpl(
-                clientTag.getId(),
-                clientTag.getDataTagQuality().clone(),
-                clientTag.getValue(),
+                tagController.getTagImpl().getId(),
+                tagController.getTagImpl().getDataTagQuality().clone(),
+                tagController.getTagImpl().getValue(),
                 null,
                 null,
                 historyEvent.getEventTime(),
                 null,
-                clientTag.getDescription(),
-                clientTag.getAlarms().toArray(new AlarmValue[0]),
-                clientTag.getMode());
+                tagController.getTagImpl().getDescription(),
+                tagController.getTagImpl().getAlarms().toArray(new AlarmValue[0]),
+                tagController.getTagImpl().getMode());
             update.setInitialValue(historyEvent.isInitialValue());
             update.setValueClassName(dataType);
             if (!removeRedundantData || !isRedundantData(previousAddedValue, update)) {

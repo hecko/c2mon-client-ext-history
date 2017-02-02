@@ -16,44 +16,34 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 
-import cern.c2mon.client.core.service.TagService;
-import cern.c2mon.client.ext.history.dbaccess.HistorySessionFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.core.cache.BasicCacheHandler;
+import cern.c2mon.client.core.jms.ConnectionListener;
+import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.client.core.listener.TagSubscriptionListener;
-import cern.c2mon.client.core.service.CoreSupervisionService;
+import cern.c2mon.client.core.listener.TagUpdateListener;
 import cern.c2mon.client.core.service.AdvancedTagService;
+import cern.c2mon.client.core.service.CoreSupervisionService;
 import cern.c2mon.client.core.tag.TagController;
-import cern.c2mon.client.ext.history.common.HistoryLoadingManager;
-import cern.c2mon.client.ext.history.common.HistoryPlayer;
-import cern.c2mon.client.ext.history.common.HistoryPlayerEvents;
-import cern.c2mon.client.ext.history.common.HistoryProvider;
-import cern.c2mon.client.ext.history.common.HistoryProviderAvailability;
-import cern.c2mon.client.ext.history.common.HistoryProviderFactory;
-import cern.c2mon.client.ext.history.common.Timespan;
+import cern.c2mon.client.core.tag.TagImpl;
+import cern.c2mon.client.ext.history.common.*;
 import cern.c2mon.client.ext.history.common.exception.HistoryPlayerNotActiveException;
 import cern.c2mon.client.ext.history.common.tag.HistoryTagManager;
 import cern.c2mon.client.ext.history.data.HistoryLoadingManagerImpl;
+import cern.c2mon.client.ext.history.dbaccess.HistorySessionFactory;
 import cern.c2mon.client.ext.history.playback.HistoryPlayerCoreAccess;
 import cern.c2mon.client.ext.history.playback.HistoryPlayerImpl;
 import cern.c2mon.client.ext.history.util.KeyForValuesMap;
-import cern.c2mon.client.core.jms.ConnectionListener;
-import cern.c2mon.client.core.jms.SupervisionListener;
 import cern.c2mon.shared.common.supervision.SupervisionConstants.SupervisionEntity;
 
 @Service
@@ -63,7 +53,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
   private static final Logger LOG = LoggerFactory.getLogger(HistoryManager.class);
   
   /** Reference to the <code>TagManager</code> singleton */
-  private final TagService tagService;
+  private final AdvancedTagService tagService;
 
   /** Reference to the <code>ClientDataTagCache</code> */
   private final BasicCacheHandler cache;
@@ -90,7 +80,7 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
   private HistorySessionFactory historySessionFactory;
  
   @Autowired
-  protected HistoryManager(final TagService tagService, final BasicCacheHandler pCache,
+  protected HistoryManager(final AdvancedTagService tagService, final BasicCacheHandler pCache,
       final CoreSupervisionService supervisionService, final HistoryTagManager historyTagManager,
                            @Qualifier("historyFactory") HistorySessionFactory historySessionFactory) {
     
@@ -213,10 +203,11 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
         && this.historyPlayer.isHistoryPlayerActive()) {
       
       // Registers all the tag update listeners and supervision listeners  
-      for (final Tag cdt : clientDataTags) {
+      for (final Tag tag : clientDataTags) {
         
         Tag realtimeValue;
-        realtimeValue = ((TagController) cdt).getTagImpl().clone();
+        TagController tagController = new TagController((TagImpl) tag);
+        realtimeValue = tagController.getTagImpl().clone();
         
         if (realtimeValue != null) {
           if (realtimeValue.getServerTimestamp().getTime() == 0) {
@@ -224,27 +215,27 @@ public class HistoryManager implements C2monHistoryManager, TagSubscriptionListe
           }
         }
         
-        ((TagController) cdt).clean();
+        tagController.clean();
         
         // Registers to tag updates
         this.historyPlayer.registerTagUpdateListener(
-            (TagUpdateListener) cdt,
-            cdt.getId(),
+            (TagUpdateListener) tagController,
+            tag.getId(),
             realtimeValue);
         
         // Tracks the listener, used when for later when unsubscribing
-        tagToSupervisionListener.add(cdt.getId(), (SupervisionListener) cdt);
+        tagToSupervisionListener.add(tag.getId(), (SupervisionListener) tagController);
         
         // Register to supervision events
         this.historyPlayer.registerSupervisionListener(
             SupervisionEntity.PROCESS,
-            (SupervisionListener) cdt,
-            cdt.getProcessIds());
+            (SupervisionListener) tagController,
+            tag.getProcessIds());
         
         this.historyPlayer.registerSupervisionListener(
             SupervisionEntity.EQUIPMENT,
-            (SupervisionListener) cdt,
-            cdt.getEquipmentIds());
+            (SupervisionListener) tagController,
+            tag.getEquipmentIds());
         
 //          For the day the SupervisionEntity.SUBEQUIPMENT also comes
 //          this.historyPlayer.registerSupervisionListener(
