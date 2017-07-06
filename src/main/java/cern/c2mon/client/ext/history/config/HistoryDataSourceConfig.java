@@ -1,13 +1,13 @@
 package cern.c2mon.client.ext.history.config;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
-
-import javax.sql.DataSource;
 
 /**
  * @author Justin Lewis Salmon
@@ -18,9 +18,17 @@ public class HistoryDataSourceConfig {
   @Bean
   @ConfigurationProperties(prefix = "c2mon.client.history.jdbc")
   public DataSource historyDataSource(Environment environment) {
-    String url = environment.getRequiredProperty("c2mon.client.history.jdbc.url");
-    String username = environment.getRequiredProperty("c2mon.client.history.jdbc.username");
-    String password = environment.getRequiredProperty("c2mon.client.history.jdbc.password");
+
+    /**
+     * HSQL only allows other JVMs to connect, if data is persisted on disk.<br/>
+     * By default C2MON server is only storing data In-Memory.
+     * Therefore please change accordingly the following c2mon server properties to the same url:
+     * <li>c2mon.server.cachedbaccess.jdbc.url</li>
+     * <li>c2mon.server.history.jdbc.url</li>
+     */
+    String url = "jdbc:hsqldb:hsql://localhost/c2mondb;sql.syntax_ora=true";
+    String username = "sa";
+    String password = "";
 
     BasicDataSource dataSource = (BasicDataSource) DataSourceBuilder.create().url(url).username(username).password(password).build();
 
