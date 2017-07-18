@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
+ * Copyright (C) 2010-2017 CERN. All rights not expressly granted are reserved.
  *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
@@ -16,39 +16,62 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.alarm;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  * This service allows querying {@link Alarm} history from the c2mon history database.
  *
- * @author Justin Lewis Salmon
+ * @author Justin Lewis Salmon, Matthias Braeger
  */
-public interface AlarmHistoryService {
+public interface AlarmHistoryService extends JpaRepository<Alarm, Long>{
+  /**
+   * Find all historical alarm records for the given time span and the given alarm id
+   * @param id alarm id
+   * @param startTime start time to search for an alarm entry
+   * @param endTime end time to search for an alarm entry
+   * @param pageable The requested page
+   * @return The requested page
+   */
+  Page<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
 
   /**
-   * Returns all results matching the given {@link HistoricAlarmQuery}.
-   *
-   * @param query the {@link HistoricAlarmQuery} to match
-   *
-   * @return the matched results
+   * Find all historical alarm records for the given time span and the given alarm id
+   * @param id alarm id
+   * @param startTime start time to search for an alarm entry
+   * @param endTime end time to search for an alarm entry
+   * @return The resulting list
    */
-  List<Alarm> findBy(HistoricAlarmQuery query);
+  List<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, LocalDateTime startTime, LocalDateTime endTime);
+
 
   /**
-   * Returns a {@link Page} of entities meeting the paging restriction provided in the {@code PageRequest} object and matching the given {@link
-   * HistoricAlarmQuery}.
-   * *
-   * <p>
-   * Note: pages are 0-based, i.e. asking for the 0th page will get you the first page.
-   * </p>
-   *
-   * @param query the {@link HistoricAlarmQuery} to match
-   * @param page  the paging restriction specifier
-   *
-   * @return a page of matched results
+   * Find all historical alarm records for the given time span
+   * @param id alarm id
+   * @param startTime start time to search for an alarm entry
+   * @param pageable The requested page
+   * @return The requested page
    */
-  Page<Alarm> findBy(HistoricAlarmQuery query, Pageable page);
+  Page<Alarm> findAllDistinctByTimestampBetweenOrderByTimestamp(LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+
+  /**
+   * Find all historical alarm records for the given time span
+   * @param id alarm id
+   * @param startTime start time to search for an alarm entry
+   * @param endTime end time to search for an alarm entry
+   * @return The resulting list
+   */
+  List<Alarm> findAllDistinctByTimestampBetweenOrderByTimestamp(LocalDateTime startTime, LocalDateTime endTime);
+
+  /**
+   * Returns the last N records for a given alarm id
+   * @param id alarm id
+   * @param pageable Use e.g. <code>new PageResult(0, 100)</code> to retrieve the last 100 historical records for the given alarm
+   * @return The page of requested alarms
+   */
+  Page<Alarm> findAllDistinctByIdOrderByTimestampDesc(Long id, Pageable pageable);
 }
