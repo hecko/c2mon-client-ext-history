@@ -1,30 +1,33 @@
 /******************************************************************************
  * Copyright (C) 2010-2016 CERN. All rights not expressly granted are reserved.
- * 
+ *
  * This file is part of the CERN Control and Monitoring Platform 'C2MON'.
  * C2MON is free software: you can redistribute it and/or modify it under the
  * terms of the GNU Lesser General Public License as published by the Free
  * Software Foundation, either version 3 of the license.
- * 
+ *
  * C2MON is distributed in the hope that it will be useful, but WITHOUT ANY
  * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
  * more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with C2MON. If not, see <http://www.gnu.org/licenses/>.
  *****************************************************************************/
 package cern.c2mon.client.ext.history.alarm;
 
 
-import lombok.Data;
-import org.hibernate.annotations.Type;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.sql.Timestamp;
+
+import lombok.Data;
+import org.hibernate.annotations.Type;
+
+import cern.c2mon.client.ext.history.alarm.config.JpaConfiguration;
 
 /**
  * Entity bean for historical alarm values.
@@ -36,9 +39,13 @@ import java.sql.Timestamp;
 @Table(name = "alarmlog")
 public class Alarm {
 
+  /**
+   * The local alarm timestamp. In the database it is stored as UTC timestamp.
+   * @see JpaConfiguration
+   */
   @Id
   @Column(name = "servertime")
-  private Timestamp timestamp;
+  private LocalDateTime timestamp;
 
   @Column(name = "alarmid")
   private Long id;
