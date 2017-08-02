@@ -19,7 +19,6 @@ package cern.c2mon.client.ext.history.util;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
 /**
@@ -33,6 +32,6 @@ public final class LocalDateTimeConverter {
   }
 
   public static final Timestamp convertToTimestamp(LocalDateTime localDateTime) {
-    return new Timestamp(localDateTime.toInstant(ZoneOffset.of(ZoneId.systemDefault().getId())).toEpochMilli());
+    return new Timestamp(localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
   }
 }
