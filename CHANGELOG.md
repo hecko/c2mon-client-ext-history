@@ -14,14 +14,18 @@ For more details on a given release, please check also the [Milestone planning](
 ### Fixed
 
 
-## [1.8.5] - 2017-07-18
+## [1.8.6] - 2017-08-03
 ### Added
+- Alarm history queries to search by fault family, member and code (#8)
 
-### Changed
+### Fixed
+- Fixed bug in helper method to convert from LocalDateTime to Timestamp
 
+## [1.8.5] - 2017-07-18
 ### Fixed
 - Fixed all `AlarmHistoryService` queries by only using JPA (#6)
 
 
-[Unreleased]: %3
+[Unreleased]: %4
+[1.8.6]: %3
 [1.8.5]: %2
