@@ -16,8 +16,6 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cern.c2mon.client.common.tag.Tag;
 import cern.c2mon.client.ext.history.common.HistoryProvider;
 import cern.c2mon.client.ext.history.common.HistoryProviderFactory;

@@ -19,7 +19,6 @@ package cern.c2mon.client.ext.history.util;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 
 /**
  * Util class to convert from/to UTC time
@@ -27,10 +26,6 @@ import java.time.ZonedDateTime;
  * @author Matthias Braeger
  */
 public final class LocalDateTimeConverter {
-  public static final LocalDateTime convertToLocalDateTime(Timestamp sqlDate) {
-    return ZonedDateTime.ofInstant(sqlDate.toInstant(), ZoneId.systemDefault()).toLocalDateTime();
-  }
-
   public static final Timestamp convertToTimestamp(LocalDateTime localDateTime) {
     return new Timestamp(localDateTime.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli());
   }

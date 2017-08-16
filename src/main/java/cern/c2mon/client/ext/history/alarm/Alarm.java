@@ -17,6 +17,7 @@
 package cern.c2mon.client.ext.history.alarm;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class Alarm {
    */
   @Id
   @Column(name = "servertime")
-  private LocalDateTime timestamp;
+  private Timestamp timestamp;
 
   @Column(name = "alarmid")
   private Long id;

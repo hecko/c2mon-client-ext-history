@@ -16,6 +16,7 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.alarm;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,9 +39,9 @@ public interface AlarmHistoryService extends JpaRepository<Alarm, Long>{
    * @param endTime end time to search for an alarm entry
    * @param pageable The requested page
    * @return The requested page
-   * @see #findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long, LocalDateTime, LocalDateTime)
+   * @see #findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long, Timestamp, Timestamp)
    */
-  Page<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
+  Page<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, Timestamp startTime, Timestamp endTime, Pageable pageable);
 
   /**
    * Find all historical alarm records for the given time span and the given alarm id
@@ -48,9 +49,9 @@ public interface AlarmHistoryService extends JpaRepository<Alarm, Long>{
    * @param startTime start time to search for an alarm entry
    * @param endTime end time to search for an alarm entry
    * @return The resulting list
-   * @see #findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long, LocalDateTime, LocalDateTime, Pageable)
+   * @see #findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long, Timestamp, Timestamp, Pageable)
    */
-  List<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, LocalDateTime startTime, LocalDateTime endTime);
+  List<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, Timestamp startTime, Timestamp endTime);
 
   /**
    * Find all historical alarm records for the given time span and the given alarm id
