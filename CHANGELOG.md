@@ -8,6 +8,7 @@ For more details on a given release, please check also the [Milestone planning](
 
 ## [Unreleased]
 ### Added
+- Added support for `ServerSupervisionEvent` browsing (c2mon-web-ui#16)
 
 ### Changed
 
