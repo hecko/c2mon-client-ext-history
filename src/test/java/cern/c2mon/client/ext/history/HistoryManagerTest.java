@@ -158,13 +158,13 @@ public class HistoryManagerTest {
     final HistoryPlayerListener historyPlayerListenerMock = EasyMock.createNiceMock(HistoryPlayerListener.class);
 
     // The list of history provider listeners which will be added
-    final Capture<HistoryProviderListener> historyProviderListeners = new Capture<HistoryProviderListener>(CaptureType.ALL);
+    final Capture<HistoryProviderListener> historyProviderListeners = new Capture<>(CaptureType.ALL);
 
     // Captures the last call for getting the initial records
-    final Capture<Long[]> initalRecordRequest = new Capture<Long[]>(CaptureType.LAST);
+    final Capture<Long[]> initalRecordRequest = new Capture<>(CaptureType.LAST);
 
     // Always contains the parameter of the last call to cacheMock.get(Set<Long>)
-    final Capture<Set<Long>> cacheGetParameter = new Capture<Set<Long>>(CaptureType.LAST);
+    final Capture<Set<Long>> cacheGetParameter = new Capture<>(CaptureType.LAST);
 
     final Object historyModeSyncLock = new Object();
 
@@ -172,20 +172,20 @@ public class HistoryManagerTest {
     final List<Tag> subscribedTags = new ArrayList<>();
 
     // The "real time" tags which is subscribed to AFTER starting the history player
-    final Map<Long, Tag> subscribedTagsAddedLater = new HashMap<Long, Tag>();
+    final Map<Long, Tag> subscribedTagsAddedLater = new HashMap<>();
 
     // The tag ids of the tags which already subscribed to when starting the history player,
     // exluding the tag ids which are filtered because of the server time of the real time value
-    final List<Long> firstInitialTagIds = new ArrayList<Long>();
+    final List<Long> firstInitialTagIds = new ArrayList<>();
 
     // The tag ids of the tags which is subscribed to after starting the history player.
-    final List<Long> secondInitialTagIds = new ArrayList<Long>();
+    final List<Long> secondInitialTagIds = new ArrayList<>();
 
     // All initial records
-    final List<HistoryTagValueUpdate> initialRecords = new ArrayList<HistoryTagValueUpdate>();
+    final List<HistoryTagValueUpdate> initialRecords = new ArrayList<>();
 
     // All history records
-    final List<HistoryTagValueUpdate> historyRecords = new ArrayList<HistoryTagValueUpdate>();
+    final List<HistoryTagValueUpdate> historyRecords = new ArrayList<>();
 
     // Generating data for the HistoryProvider
     for (int i = 0; i < NUMBER_OF_INITIAL_TAGS + NUMBER_OF_ADDED_TAGS; i++) {
@@ -381,10 +381,10 @@ public class HistoryManagerTest {
     EasyMock.expect(cacheMock.isHistoryModeEnabled()).andStubReturn(true);
 
     EasyMock.expect(tagServiceMock.get(EasyMock.<Collection<Long>>anyObject()))
-      .andDelegateTo(new TagServiceImpl(null, null, null) {
+      .andDelegateTo(new TagServiceImpl(null, null, null, null) {
         @Override
         public Collection<Tag> get(final Collection<Long> tagIds) {
-          final List<Tag> result = new ArrayList<Tag>();
+          final List<Tag> result = new ArrayList<>();
           for (Tag tag : subscribedTags) {
             if (tagIds.contains(tag.getId())) {
               result.add(tag);
@@ -453,7 +453,7 @@ public class HistoryManagerTest {
     initalRecordRequest.reset();
     finishedLoading.set(false);
 
-    historyManager.onNewTagSubscriptions(new HashSet<Long>(secondInitialTagIds));
+    historyManager.onNewTagSubscriptions(new HashSet<>(secondInitialTagIds));
 
     // Wait for the loading to finish
     if (LOADING_TIMEOUT != null) {
@@ -477,7 +477,7 @@ public class HistoryManagerTest {
 
     // Phase 3
     // Unsubscribe from data tags
-    historyManager.onUnsubscribe(new HashSet<Long>(firstInitialTagIds));
+    historyManager.onUnsubscribe(new HashSet<>(firstInitialTagIds));
     Assert.assertTrue("The history is not fully loaded..", historyPlayer.getHistoryLoadedUntil().compareTo(historyPlayer.getEnd()) >= 0);
 
     // Phase 4
@@ -506,7 +506,7 @@ public class HistoryManagerTest {
     return new HistoryProviderDummy() {
       @Override
       public Collection<HistoryTagValueUpdate> getInitialValuesForTags(final Long[] pTagIds, final Timestamp before) {
-        final List<HistoryTagValueUpdate> result = new ArrayList<HistoryTagValueUpdate>();
+        final List<HistoryTagValueUpdate> result = new ArrayList<>();
 
         // Simulates the events which would happend in the history provider
         for (HistoryProviderListener listener : historyProviderListeners.getValues()) {
@@ -546,7 +546,7 @@ public class HistoryManagerTest {
         }
 
         // Filters out the tags and timespan that is asked for.
-        final List<HistoryTagValueUpdate> result = new ArrayList<HistoryTagValueUpdate>();
+        final List<HistoryTagValueUpdate> result = new ArrayList<>();
         final List<Long> tagIdList = Arrays.asList(tagIds);
         for (final HistoryTagValueUpdate value : historyRecords) {
           if (tagIdList.contains(value.getId())) {
