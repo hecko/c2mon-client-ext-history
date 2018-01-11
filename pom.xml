@@ -18,6 +18,15 @@
     <developerConnection>scm:git:ssh://git@gitlab.cern.ch:7999/c2mon/c2mon-client-ext-history.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
+  
+  <repositories>
+    <!-- This is needed to retrieve the DIP dependencies -->
+    <repository>
+      <id>cern-nexus</id>
+      <name>CERN Central Nexus</name>
+      <url>https://nexus.web.cern.ch/nexus/content/groups/public</url>
+    </repository>
+  </repositories>
 
   <dependencies>
     <!-- C2MON dependencies -->
@@ -27,10 +36,6 @@
     </dependency>
 
     <!-- 3rd party dependencies -->
-    <dependency>
-      <groupId>com.oracle</groupId>
-      <artifactId>ojdbc</artifactId>
-    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
@@ -75,9 +80,9 @@
        <version>5.2.10.Final</version>
     </dependency>
     <dependency>
-       <groupId>org.hibernate</groupId>
-       <artifactId>hibernate-validator</artifactId>
-       <version>5.4.1.Final</version>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.0.7.Final</version>
     </dependency>
     <dependency>
        <groupId>org.glassfish</groupId>
