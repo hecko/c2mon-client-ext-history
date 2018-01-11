@@ -20,7 +20,7 @@
   </scm>
   
   <repositories>
-    <!-- This is needed to retrieve the DIP dependencies -->
+    <!-- This is needed to retrieve the C2MON dependencies -->
     <repository>
       <id>cern-nexus</id>
       <name>CERN Central Nexus</name>
