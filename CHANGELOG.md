@@ -8,12 +8,19 @@ For more details on a given release, please check also the [Milestone planning](
 
 ## [Unreleased]
 ### Added
-- Added support for `ServerSupervisionEvent` browsing (c2mon-web-ui#16)
 
 ### Changed
 
 ### Fixed
 
+## 1.8.8 - 2018-01-11
+### Fixed
+- Fixed dependency resolution for building library outside of CERN environment
+
+
+## 1.8.7 - 2017-11-27
+### Added
+- Added support for `ServerSupervisionEvent` browsing (c2mon-web-ui#16)
 
 ## [1.8.6] - 2017-08-03
 ### Added
