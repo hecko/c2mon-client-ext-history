@@ -169,10 +169,10 @@ public class HistoryManagerTest {
     final Object historyModeSyncLock = new Object();
 
     // The "real time" tags which is already subscribed to when starting the history player
-    final List<Tag> subscribedTags = new ArrayList<>();
+    final List<TagController> subscribedTags = new ArrayList<>();
 
     // The "real time" tags which is subscribed to AFTER starting the history player
-    final Map<Long, Tag> subscribedTagsAddedLater = new HashMap<>();
+    final List<TagController> subscribedTagsAddedLater = new ArrayList<>();
 
     // The tag ids of the tags which already subscribed to when starting the history player,
     // exluding the tag ids which are filtered because of the server time of the real time value
@@ -218,11 +218,11 @@ public class HistoryManagerTest {
 
       if (!isAddedLater) {
         // Adds it to the subscribed tags
-        subscribedTags.add(tagController.getTagImpl());
+        subscribedTags.add(tagController);
       }
       else {
         // Adds it to the list of tags which will be subscribed to later
-        subscribedTagsAddedLater.put(tagController.getTagImpl().getId(), tagController.getTagImpl());
+        subscribedTagsAddedLater.add(tagController);
       }
 
       if (!isAddedLater) {
@@ -362,8 +362,8 @@ public class HistoryManagerTest {
 
     EasyMock.expect(coreSupervisionService.isServerConnectionWorking()).andStubReturn(Boolean.TRUE);
 
-    EasyMock.expect(cacheMock.get(EasyMock.capture(cacheGetParameter))).andReturn(subscribedTagsAddedLater).atLeastOnce();
-    EasyMock.expect(cacheMock.getAllSubscribedDataTags()).andReturn(subscribedTags).atLeastOnce();
+    EasyMock.expect(cacheMock.getTagControllers(EasyMock.capture(cacheGetParameter))).andReturn(subscribedTagsAddedLater).atLeastOnce();
+    EasyMock.expect(cacheMock.getAllTagControllers()).andReturn(subscribedTags).atLeastOnce();
 
     historyPlayerListenerMock.onInitializingHistoryProgressStatusChanged(EasyMock.<String>anyObject());
     EasyMock.expectLastCall().atLeastOnce().asStub();
@@ -385,9 +385,9 @@ public class HistoryManagerTest {
         @Override
         public Collection<Tag> get(final Collection<Long> tagIds) {
           final List<Tag> result = new ArrayList<>();
-          for (Tag tag : subscribedTags) {
-            if (tagIds.contains(tag.getId())) {
-              result.add(tag);
+          for (TagController tagController : subscribedTags) {
+            if (tagIds.contains(tagController.getTagImpl().getId())) {
+              result.add(tagController.getTagImpl());
             }
           }
           return result;
