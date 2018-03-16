@@ -16,12 +16,13 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.updates;
 
-import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
-import cern.c2mon.client.ext.history.common.id.TagValueUpdateId;
-import cern.c2mon.shared.client.alarm.AlarmValue;
-import cern.c2mon.shared.client.tag.TagMode;
-import cern.c2mon.shared.client.tag.TagValueUpdate;
-import cern.c2mon.shared.common.datatag.DataTagQuality;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+
 import lombok.Data;
 import org.simpleframework.xml.Element;
 import org.simpleframework.xml.Root;
@@ -29,12 +30,12 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.convert.AnnotationStrategy;
 import org.simpleframework.xml.core.Persister;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import cern.c2mon.client.ext.history.common.HistoryTagValueUpdate;
+import cern.c2mon.client.ext.history.common.id.TagValueUpdateId;
+import cern.c2mon.shared.client.alarm.AlarmValue;
+import cern.c2mon.shared.client.tag.TagMode;
+import cern.c2mon.shared.client.tag.TagValueUpdate;
+import cern.c2mon.shared.common.datatag.DataTagQuality;
 
 /**
  * Implementation of the {@link TagValueUpdate}
@@ -144,12 +145,10 @@ public class HistoryTagValueUpdateImpl implements HistoryTagValueUpdate {
     this.description = description;
     this.mode = mode;
     this.isSimulated = false;
-    this.alarms = new ArrayList<AlarmValue>();
+    this.alarms = new ArrayList<>();
     if (alarms != null) {
       this.alarms.addAll(Arrays.asList(alarms));
     }
-    this.valueClassName = null;
-    this.daqTimestamp = null;
   }
 
   /**
@@ -196,10 +195,14 @@ public class HistoryTagValueUpdateImpl implements HistoryTagValueUpdate {
         tagValueUpdate.getDescription(),
         tagValueUpdate.getAlarms().toArray(new AlarmValue[0]),
         tagValueUpdate.getMode());
+
     if (tagValueUpdate instanceof HistoryTagValueUpdateImpl) {
       HistoryTagValueUpdateImpl historyTagValueUpdate = (HistoryTagValueUpdateImpl) tagValueUpdate;
       this.valueClassName = historyTagValueUpdate.getValueClassName();
       this.initialValue = historyTagValueUpdate.isInitialValue();
+    }
+    else if (tagValueUpdate.getValue() != null){
+      this.valueClassName = tagValueUpdate.getValue().getClass().getName();
     }
   }
 
