@@ -105,6 +105,10 @@ public class HistoryTagValueUpdateImpl implements HistoryTagValueUpdate {
   /** <code>true</code> if the value is an initial value */
   private boolean initialValue = false;
 
+  public HistoryTagValueUpdateImpl(final Long tagId) {
+    this(tagId, null, null, null, null, null, null, null, null, null);
+  }
+
   /**
    *
    * @param tagId
