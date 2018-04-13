@@ -47,6 +47,9 @@ public class Alarm {
   @Column(name = "servertime")
   private LocalDateTime timestamp;
 
+  @Column(name = "logdate")
+  private LocalDateTime logdate;
+
   @Column(name = "alarmid")
   private Long id;
 
