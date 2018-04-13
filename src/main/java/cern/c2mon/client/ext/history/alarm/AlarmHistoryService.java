@@ -16,14 +16,15 @@
  *****************************************************************************/
 package cern.c2mon.client.ext.history.alarm;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * This service allows querying {@link Alarm} history from the c2mon history database.
@@ -51,6 +52,13 @@ public interface AlarmHistoryService extends JpaRepository<Alarm, Long>{
    * @see #findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long, LocalDateTime, LocalDateTime, Pageable)
    */
   List<Alarm> findAllDistinctByIdAndTimestampBetweenOrderByTimestamp(Long id, LocalDateTime startTime, LocalDateTime endTime);
+
+
+
+  @Query("SELECT DISTINCT a FROM Alarm a WHERE "
+          + "a.id = :alarmId "
+          + "ORDER BY a.timestamp DESC, a.logdate DESC")
+  Stream<Alarm> findAllDistinctByIdOrderByTimestampAndLogdate(@Param("alarmId") Long alarmId, Pageable pageable);
 
   /**
    * Find all historical alarm records for the given time span and the given alarm id
