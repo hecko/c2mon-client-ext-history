@@ -69,4 +69,15 @@ public class Alarm {
   private boolean active;
 
   private String info;
+
+  public Alarm(LocalDateTime logdate, Long id, Long tagId, String faultFamily, boolean active,
+               LocalDateTime timestamp, String info) {
+    this.logdate = logdate;
+    this.id = id;
+    this.tagId = tagId;
+    this.faultFamily = faultFamily;
+    this.active = active;
+    this.timestamp = timestamp;
+    this.info = info;
+  }
 }

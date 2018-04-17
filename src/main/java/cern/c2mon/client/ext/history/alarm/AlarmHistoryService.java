@@ -55,10 +55,11 @@ public interface AlarmHistoryService extends JpaRepository<Alarm, Long>{
 
 
 
-  @Query("SELECT DISTINCT a FROM Alarm a WHERE "
+  @Query("SELECT new Alarm(a.logdate, a.tagId, a.id, "
+          + "a.faultFamily, a.active, a.timestamp, a.info) FROM Alarm a WHERE "
           + "a.id = :alarmId "
           + "ORDER BY a.timestamp DESC, a.logdate DESC")
-  Stream<Alarm> findAllDistinctByIdOrderByTimestampAndLogdate(@Param("alarmId") Long alarmId, Pageable pageable);
+  Page<Alarm> findAllByIdOrderByTimestampAndLogdate(@Param("alarmId") Long alarmId, Pageable pageable);
 
   /**
    * Find all historical alarm records for the given time span and the given alarm id
