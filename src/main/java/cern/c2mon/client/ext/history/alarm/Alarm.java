@@ -70,6 +70,16 @@ public class Alarm {
 
   private String info;
 
+    /**
+     * Constructor used for retrieving part of data from database with JPA
+     * @param logdate
+     * @param id
+     * @param tagId
+     * @param faultFamily
+     * @param active
+     * @param timestamp
+     * @param info
+     */
   public Alarm(LocalDateTime logdate, Long id, Long tagId, String faultFamily, boolean active,
                LocalDateTime timestamp, String info) {
     this.logdate = logdate;
